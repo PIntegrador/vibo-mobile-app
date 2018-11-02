@@ -21,3 +21,22 @@ export const db = firebase.firestore();
 export const storage = firebase.storage();
 export const auth = firebase.auth();
 export default db;*/
+
+import * as firebase from 'firebase';
+
+import { AuthStore } from './AuthStore';
+import { ChatStore } from './ChatStore';
+
+if(!firebase.apps.length) firebase.initializeApp({
+  apiKey: "AIzaSyAXR1w3tX7tLDql3Spdq0x0E5DRlKicibg",
+  authDomain: "nm-app-b80df.firebaseapp.com",
+  databaseURL: "https://nm-app-b80df.firebaseio.com",
+  projectId: "nm-app-b80df",
+  storageBucket: "gs://nm-app-b80df.appspot.com",
+  messagingSenderId: "452799787770",
+});
+
+export const stores = {
+  auth: new AuthStore(firebase),
+  chat: new ChatStore(firebase),
+};
