@@ -4,6 +4,7 @@ import {Platform,StyleSheet,Text, View} from 'react-native';
 import { FormInput, FormLabel, Button } from 'react-native-elements';
 
 import {homeStore} from '../store/HomeStore'
+import { authStore } from '../store/AuthStore';
 
 
 @observer export default class Home extends Component  {
@@ -14,7 +15,7 @@ import {homeStore} from '../store/HomeStore'
     }
 
     onSend() {
-        homeStore.prueba();
+        authStore.signOut();
     }
     render() {
         return ( 
@@ -22,6 +23,11 @@ import {homeStore} from '../store/HomeStore'
             <Text style = {styles.welcome} >Hello android vibo app! </Text> 
             <Button buttonStyle={styles.button}
             title="Proyecto" large 
+            //onPress={this.onSend}
+            />
+
+            <Button buttonStyle={styles.button}
+            title="cerrar sesion" large 
             onPress={this.onSend} />
             </View> );
     }
