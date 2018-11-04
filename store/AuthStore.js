@@ -8,12 +8,12 @@ import React from 'react'
 import {
   ToastAndroid
 } from 'react-native'
+import Login from '../Containers/Login';
 
 class AuthStore {
 
   @observable user = null;
   @observable error = null;
-  @observable errorMsg = "";
   @observable isError = false;
   @observable isNewUSer = false;
 
@@ -56,18 +56,28 @@ class AuthStore {
         let errorMessage = error.message;
 
         isError = true;
-        this.errorMsg = errorMessage;
         if (errorCode == 'auth/weak-password') {
           ToastAndroid.show('The password is too weak.', ToastAndroid.SHORT);
         } else {
-          ToastAndroid.show(this.errorMsg, ToastAndroid.SHORT);
+          ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
         }
       });
 
       this.isError = false;
       this.isNewUSer = true;
-      ToastAndroid.show('Registrando', ToastAndroid.SHORT);
+      ToastAndroid.show('Registrando...', ToastAndroid.SHORT);
   }
+
+  @action login(email, password) {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch(function(error) {
+      let errorCode = error.code;
+      let errorMessage = error.message;
+      ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+    });
+    ToastAndroid.show("Iniciando...", ToastAndroid.SHORT);
+  }
+  
   @action addNewUser(user) {
     if (user != null) {
       this.newUser.email = user.email;
@@ -79,7 +89,6 @@ class AuthStore {
       this.ref.add(this.newUser);
     }
   }
-
 
   @action signOut() {
     firebase.auth().signOut().then(function () {

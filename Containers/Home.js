@@ -20,11 +20,10 @@ import { authStore } from '../store/AuthStore';
     render() {
         return ( 
             <View style = {styles.container} > 
-            <Text style = {styles.welcome} >Hello android vibo app! </Text> 
-            <Button buttonStyle={styles.button}
-            title="Proyecto" large 
-            //onPress={this.onSend}
-            />
+            <Text style = {styles.welcome} >Hello!</Text> 
+            <Text style = {styles.welcome} > {
+                authStore.user.email}
+            </Text>
 
             <Button buttonStyle={styles.button}
             title="cerrar sesion" large 
@@ -38,7 +37,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#FBFBFB'
     },
     welcome: {
         fontSize: 20,
@@ -46,7 +45,8 @@ const styles = StyleSheet.create({
         margin: 10
     },
     button: {
-        backgroundColor: 'violet',
+        backgroundColor: '#310432',
+        width: 300,
         marginTop: 20,
     }
 });

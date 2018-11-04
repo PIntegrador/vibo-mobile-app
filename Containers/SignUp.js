@@ -1,7 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, TextInput, View, Picker, Image, StatusBar, ToastAndroid } from 'react-native'
 import { Button } from 'react-native-elements'
+
 import { authStore } from '../store/AuthStore';
+import { mainStore } from '../store/MainStore';
+
 import { observer } from 'mobx-react';
 import { observable } from 'mobx';
 
@@ -45,7 +48,7 @@ render() {
         <TextInput
           //value={this.credentials.email}
           onChangeText={e => this.credentials.email = e}
-          placeholder="smondragon@vibo.com"
+          placeholder="example@vibo.com"
           autoCapitalize="none"
           style={styles.textInput}
         />
@@ -88,7 +91,7 @@ render() {
           large
         />
         <Text style={{marginTop: 20}}>
-          Ya tienes una cuenta?
+          ¿Ya tienes una cuenta?
         </Text>
         <Button
           title="Inicia Sesión"
@@ -96,6 +99,9 @@ render() {
           buttonStyle={styles.buttonRegistrate}
           color = "#310432"
           large
+          onPressOut={() => {
+            mainStore.screen = "login"
+          }}
         />
 
       </View>
@@ -112,7 +118,8 @@ const styles = StyleSheet.create({
     padding: 20
   },
   logo: {
-    marginBottom: 20
+    marginBottom: 20,
+    marginTop: 20
   },
   title: {
     color: "#310432",
