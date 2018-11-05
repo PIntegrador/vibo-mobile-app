@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
         alignItems: 'center' ,
         justifyContent: 'space-between',
         backgroundColor:'white',
-        marginLeft: 14,
-
+        paddingLeft: 14,
+        elevation:2
     },
     icon: {
         height: 27,

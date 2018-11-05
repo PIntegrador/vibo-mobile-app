@@ -1,9 +1,8 @@
 import React from 'react'
 import {observable} from 'mobx'
 import {observer} from "mobx-react";
-import {Platform,ScrollView, TextInput, StyleSheet,Text,TouchableHighlight,StatusBar, View} from 'react-native';
+import {Platform,ScrollView, TextInput, StyleSheet,keyboardVerticalOffset,KeyboardAvoidingView ,StatusBar, View} from 'react-native';
 import { FormInput, FormLabel, Button } from 'react-native-elements';
-import AutogrowInput from 'react-native-autogrow-input';
 
 import {chatStore} from '../store/ChatStore'
 import {authStore} from '../store/AuthStore'
@@ -18,19 +17,12 @@ import { Header } from '../components/Header';
    
     @observable message = '';
     @observable uid = ''
-
     constructor(props){
         super(props);
         this.onSend = this.onSend.bind(this);
         this.message = ''
         this.uid = authStore.user.uid;
     }
-    componentDidMount() {
-        chatStore.functi();
-    }
-    componentWillUnmount() {
-        chatStore.nofuncti();
-}
     onSend() {
         if(this.message != ''){
             chatStore.sendMessage(this.message,this.uid );
@@ -39,11 +31,8 @@ import { Header } from '../components/Header';
     }
 
     messages() {
-        messageList  = this.props.messageList
-        .sort(function(a,b) {
-            return new Date(a.date) - new Date(b.date); 
-        });
-        return  messageList.map(elemento => {
+        
+        return  this.props.messageListOrdered.map(elemento => {
             if(elemento.user == this.uid) {
                 return <OwnMessage id = {elemento.id} messageText = {elemento.messageText}/>
              } else {
@@ -52,7 +41,6 @@ import { Header } from '../components/Header';
             }
         )
     }
-
    
     clearText () {
         this.message = '';
@@ -68,11 +56,10 @@ import { Header } from '../components/Header';
             <Header/>
             <ProjectHeader />
            <ChatHeader />
-            <ScrollView style= {styles.scrollCont} >
+           <ScrollView style= {styles.scrollCont} >
             <View style= {styles.chatContent}>
             {this.messages()}
             </View>
-            
             </ScrollView>
             <View style= {styles.writeMessage} >
             <TextInput style= {styles.input}
@@ -80,11 +67,12 @@ import { Header } from '../components/Header';
                   onChangeText={v => (this.message = v)}
                   value={this.message}
                   placeholder="Escribe un mensaje..."
+                  multiline
                   />
                 <Button buttonStyle={styles.button}
                 title="Enviar" 
                 onPress={this.onSend}/>
-            </View>
+            </View>          
         </View> );
     }
 }
@@ -98,21 +86,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
         padding:0
     },
-    scrollCont: {
-        width:'100%',
-        backgroundColor:'#FBFBFB',
-        padding:10,
+    scrollCont : {
+        maxWidth: '100%',
     },
     chatContent: {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         width:'100%',
-        padding:2,
+        backgroundColor:'#FBFBFB',
+        padding:10,
         marginBottom:10
     },
     writeMessage: {
+        position: 'relative',
+        bottom: 0,
+        left: 0,
         flexDirection: 'row',
-        height:60,
+        minHeight:60,
+        maxHeight:100,
         width:'100%',
         backgroundColor:'white',
         justifyContent: 'flex-start',
@@ -121,11 +112,11 @@ const styles = StyleSheet.create({
         paddingTop:10,
         paddingBottom: 10,
         paddingLeft: 18,
-        elevation: 7,
-        
+        elevation: 7,  
     },
     input:{
-        height:40,
+        
+       
         width: '70%',
         backgroundColor:'white',
         paddingLeft: 5,
