@@ -34,10 +34,10 @@ render() {
           backgroundColor="#FBFBFB"
           barStyle="dark-content"
         />
-        <Image 
+        {/* <Image 
           style={styles.logo}
-          source = {require('../data/images/logo.png')}
-        />
+          source = {require('../data/images/logoBlanco.png')}
+        /> */}
         <Text style={styles.title}>
           Tus proyectos de visualizaciones contigo siempre
         </Text>

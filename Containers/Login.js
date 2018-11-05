@@ -35,10 +35,10 @@ render() {
           backgroundColor="#310432"
           barStyle="light-content"
         />
-        <Image 
-          style={styles.logo}
-          source = {require('../data/images/logoBlanco.png')}
-        />
+        {/* <Image 
+          style={styles.logo} 
+          source = {require('../data/images/logo.png')}
+        /> */}
         <Text style={styles.title}>
           Tus proyectos de visualizaciones contigo siempre
         </Text>

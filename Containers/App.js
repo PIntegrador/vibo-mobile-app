@@ -16,11 +16,10 @@ import { mainStore } from '../store/MainStore';
             return ( <Home /> );
         }
 
-
         if(mainStore.screen === "login" && !authStore.user){
             return ( <Login/> );
         }
-        
+
         if(mainStore.screen === "signup" && !authStore.user){
             return ( <SignUp/>  );
         }

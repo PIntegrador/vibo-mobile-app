@@ -11,12 +11,6 @@ class MainStore {
     constructor() {
 
     }
-
-    @action prueba() {
-        this.ref.add({
-            title: "Hello native",
-            complete: false,
-        });
-    }
+    
 }
 export const mainStore = new MainStore();
