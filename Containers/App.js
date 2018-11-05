@@ -8,6 +8,7 @@ import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
 import Chat from './Chat';
+import { mainStore } from '../store/MainStore';
 
 
 @observer export default class App extends Component  {
@@ -15,7 +16,14 @@ import Chat from './Chat';
         if(authStore.user) {
             return ( <Home /> );
         }
-        return ( <Chat/>  );
+
+        if(mainStore.screen === "login" && !authStore.user){
+            return ( <Login/> );
+        }
+        
+        if(mainStore.screen === "signup" && !authStore.user){
+            return ( <SignUp/>  );
+        }
     }
 }
 

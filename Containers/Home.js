@@ -4,6 +4,7 @@ import {Platform,StyleSheet,Text, View} from 'react-native';
 import { FormInput, FormLabel, Button } from 'react-native-elements';
 
 import {homeStore} from '../store/HomeStore'
+import { authStore } from '../store/AuthStore';
 
 
 @observer export default class Home extends Component  {
@@ -14,14 +15,18 @@ import {homeStore} from '../store/HomeStore'
     }
 
     onSend() {
-        homeStore.prueba();
+        authStore.signOut();
     }
     render() {
         return ( 
             <View style = {styles.container} > 
-            <Text style = {styles.welcome} >Hello android vibo app! </Text> 
+            <Text style = {styles.welcome} >Hello!</Text> 
+            <Text style = {styles.welcome} > {
+                authStore.user.email}
+            </Text>
+
             <Button buttonStyle={styles.button}
-            title="Proyecto" large 
+            title="cerrar sesion" large 
             onPress={this.onSend} />
             </View> );
     }
@@ -32,7 +37,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#FBFBFB'
     },
     welcome: {
         fontSize: 20,
@@ -40,7 +45,8 @@ const styles = StyleSheet.create({
         margin: 10
     },
     button: {
-        backgroundColor: 'violet',
+        backgroundColor: '#310432',
+        width: 300,
         marginTop: 20,
     }
 });
