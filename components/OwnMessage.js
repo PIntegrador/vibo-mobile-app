@@ -12,12 +12,13 @@ export const OwnMessage = (props) => {
     
 const styles = StyleSheet.create({
     messageCont: {        
-        width: '50%',
+        flex: -1,
         backgroundColor: '#310432',
         padding: 12,
         borderRadius: 6,
         marginBottom: 5,
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        elevation:2
     },
     message: {
         color: 'white',

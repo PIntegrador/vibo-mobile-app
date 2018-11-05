@@ -6,14 +6,22 @@ class ChatStore {
     @observable messageList = [];
     @observable messageListOrdered = [];
     @observable ref = firebase.firestore().collection('Chat');
-    constructor(){
-        this.ref.onSnapshot((querySnapshot) => {
+    @observable loading = true;
+    functi() {
+        this.unsubscribe = this.ref.onSnapshot(this.onCollectionUpdate);
+    }
+
+    nofuncti() {
+        this.unsubscribe();
+    }
+    
+    onCollectionUpdate = (querySnapshot) => {
             this.messageList = []
 
             querySnapshot.forEach((doc) => {
                 let ele = {
                     messageText: doc.data().messageText,
-                    user: doc.data().userid,
+                    user: doc.data().user,
                     projectid: doc.data().projectid,
                     id: doc.id,
                     date: doc.data().date
@@ -21,7 +29,13 @@ class ChatStore {
                 this.messageList.push(ele);
             });
 
-        });
+            this.loading = false;
+        }
+    constructor(){
+    /*    this.ref.onSnapshot((querySnapshot) => {
+            
+
+        });*/
         
     }
 

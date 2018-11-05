@@ -97,5 +97,6 @@ class AuthStore {
       ToastAndroid.show(error.message, ToastAndroid.SHORT);
     });
   }
+
 }
 export const authStore = new AuthStore();
