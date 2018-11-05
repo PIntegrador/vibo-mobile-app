@@ -9,12 +9,13 @@ import Login from './Login';
 import SignUp from './SignUp';
 import Chat from './Chat';
 import { mainStore } from '../store/MainStore';
+import {chatStore} from '../store/ChatStore'
 
 
 @observer export default class App extends Component  {
     render() {
         if(authStore.user) {
-            return ( <Home /> );
+            return ( <Chat messageList= {chatStore.messageList}/> );
         }
 
         if(mainStore.screen === "login" && !authStore.user){

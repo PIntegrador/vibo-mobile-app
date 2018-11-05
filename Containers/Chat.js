@@ -1,4 +1,4 @@
-import React, {Component } from 'react';
+import React from 'react'
 import {observable} from 'mobx'
 import {observer} from "mobx-react";
 import {Platform,ScrollView, TextInput, StyleSheet,Text,TouchableHighlight, View} from 'react-native';
@@ -8,7 +8,7 @@ import {authStore} from '../store/AuthStore'
 import { OwnMessage } from '../components/OwnMessage';
 
 
-@observer export default class Chat extends Component  {
+@observer export default class Chat extends React.Component  {
    
     @observable message = '';
 
@@ -20,7 +20,7 @@ import { OwnMessage } from '../components/OwnMessage';
 
     onSend() {
         if(this.message != ''){
-            chatStore.sendMessage(this.message, authStore.user);
+            chatStore.sendMessage(this.message, "uid");
             this.clearText();
         }
        
@@ -38,7 +38,7 @@ import { OwnMessage } from '../components/OwnMessage';
             </View>
             <ScrollView style= {styles.scrollCont} >
             <View style= {styles.chatContent}>
-            {chatStore.messageList.map(elemento => 
+            {this.props.messageList.map(elemento => 
                 <OwnMessage id = {elemento.id} messageText = {elemento.messageText}
                 />
                )}
