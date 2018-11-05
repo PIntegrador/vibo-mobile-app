@@ -7,6 +7,7 @@ import {authStore} from '../store/AuthStore'
 import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
+import Chat from './Chat';
 import { mainStore } from '../store/MainStore';
 
 
@@ -15,7 +16,6 @@ import { mainStore } from '../store/MainStore';
         if(authStore.user) {
             return ( <Home /> );
         }
-
 
         if(mainStore.screen === "login" && !authStore.user){
             return ( <Login/> );
