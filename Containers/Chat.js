@@ -20,6 +20,7 @@ import { Header } from '../components/Header';
     constructor(props){
         super(props);
         this.onSend = this.onSend.bind(this);
+        this.logout = this.logout.bind(this);
         this.message = ''
         this.uid = authStore.user.uid;
     }
@@ -29,6 +30,11 @@ import { Header } from '../components/Header';
             this.clearText();
         }
     }
+
+    logout () {
+        authStore.signOut();
+    }
+
 
     messages() {
         

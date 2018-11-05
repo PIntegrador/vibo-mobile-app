@@ -5,7 +5,7 @@ import { FormInput, FormLabel, Button } from 'react-native-elements';
 import {authStore} from '../store/AuthStore'
 
 export const ChatHeader = (props) => {
-
+   
     return (
         <View style= {styles.chatHeader} >
         <Image style = {styles.backIcon}
@@ -14,7 +14,11 @@ export const ChatHeader = (props) => {
         <Text  style = {styles.atras}>atrás</Text>
                 <Text style = {styles.titleText}>Chat Grupal</Text> 
                 <Button buttonStyle={styles.button}
-            title="cerrar sesion"  />
+            title="cerrar sesion" 
+            onPressOut={(event)=>{
+                event.preventDefault();
+               authStore.signOut();
+              }}/>
             </View>
     )
 }
