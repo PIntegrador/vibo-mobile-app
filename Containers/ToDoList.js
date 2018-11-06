@@ -15,28 +15,20 @@ import Task from '../Components/Task';
 
     }
 
-
+/*
     componentDidMount() {
         tasksStore.functi();
     }
 
-
-
-
     componentWillUnmount() {
         tasksStore.nofuncti();
-    }
+    }*/
 
-    list(kind) {
-        let array = tasksStore.tasks
-            .filter((e) => { return e.complete == kind })
-            .sort(function (a, b) {
-                return new Date(b.date) - new Date(a.date);
-            });
+    list(array) {
 
         return array.map(e => {
             return (
-                    <Task key= {e.key} name={e.name} complete={e.complete} />
+                    <Task key= {e.key} doc={e.doc} name={e.name} complete={e.complete} />
             )
         })
     }
@@ -52,21 +44,21 @@ import Task from '../Components/Task';
                             <View style={[styles.marker, styles.mTodo]} />
                             <Text style={[styles.mTodo, styles.markerText]}> Pendiente</Text>
                         </View>
-                        {this.list("todo")}
+                        {this.list(tasksStore.todos)}
                     </View>
                     <View style={styles.todoContainer}>
                         <View style={styles.markerContainer}>
                             <View style={[styles.marker, styles.mDoing]} />
                             <Text style={[styles.mDoing, styles.markerText]}> En marcha</Text>
                         </View>
-                        {this.list("doing")}
+                        {this.list(tasksStore.doings)}
                     </View>
                     <View style={styles.todoContainer}>
                         <View style={styles.markerContainer}>
                             <View style={[styles.marker, styles.mDone]} />
                             <Text style={[ styles.mDone, styles.markerText]}> Terminadas</Text>
                         </View>
-                        {this.list("done")}
+                        {this.list(tasksStore.dones)}
                     </View>
 
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableHighlight, View, Text, ToastAndroid, PanResponder, Animated, Dimensions } from 'react-native';
 import { observer } from "mobx-react";
+import { tasksStore } from '../store/TasksStore';
 
 
 
@@ -53,15 +54,37 @@ import { observer } from "mobx-react";
                 }
     }
 
+    handleTaskPressing() {
+        
+        if (this.props.complete == "todo") {
+            this.props.doc.ref.update({
+                complete: "doing"
+            })
+        } else if (this.props.complete == "doing") {
+            this.props.doc.ref.update({
+                complete: "done"
+            })
+        } else if (this.props.complete == "done") {
+            this.props.doc.ref.update({
+                complete: "todo"
+            })
+        }
+    }
+
     render() {
 
+        if (tasksStore.loading == true) {
+            return null;
+        }
+        
         let { pan } = this.state;
         let [translateX, translateY] = [pan.x, pan.y];
         let taskStyle = { transform: [{ translateX }, { translateY }] };
 
         return (
+            <TouchableHighlight onPress={ () => this.handleTaskPressing()} style={styles.container}>
+
             <Animated.View style={taskStyle} {...this._panResponder.panHandlers}>
-                <TouchableHighlight style={styles.container}>
                     <View style={styles.subcontainer} >
                         <View style={styles.subcontainer}>
                             {
@@ -72,8 +95,9 @@ import { observer } from "mobx-react";
                         <View style={styles.assign} />
                     </View>
 
-                </TouchableHighlight>
             </Animated.View>
+            </TouchableHighlight>
+
 
         )
     }
