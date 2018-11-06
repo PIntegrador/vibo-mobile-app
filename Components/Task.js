@@ -11,7 +11,8 @@ import { tasksStore } from '../store/TasksStore';
         super(props);
 
         this.state = {
-            pan: new Animated.ValueXY()
+            pan: new Animated.ValueXY(),
+            dropZoneValues: null
         };
     }
     componentWillMount() {
@@ -32,8 +33,12 @@ import { tasksStore } from '../store/TasksStore';
                 Animated.spring(
                     this.state.pan, {
                         toValue: { x: 0, y: 0 },
-                        friction: 5
-                    }).start();
+                        friction: 10
+                    }).start(({finished}) => {
+                        if (finished) {
+                            this.handleTaskPressing();
+                        }
+                    });
             }
         });
 
@@ -82,9 +87,13 @@ import { tasksStore } from '../store/TasksStore';
         let taskStyle = { transform: [{ translateX }, { translateY }] };
 
         return (
-            <TouchableHighlight onPress={ () => this.handleTaskPressing()} style={styles.container}>
+            /*
+                      <TouchableHighlight underlayColor="white"   onPress={ () => this.handleTaskPressing()} >
+             </TouchableHighlight>
 
-            <Animated.View style={taskStyle} {...this._panResponder.panHandlers}>
+            */ 
+
+            <Animated.View style={[taskStyle, styles.container]} {...this._panResponder.panHandlers} >
                     <View style={styles.subcontainer} >
                         <View style={styles.subcontainer}>
                             {
@@ -96,7 +105,6 @@ import { tasksStore } from '../store/TasksStore';
                     </View>
 
             </Animated.View>
-            </TouchableHighlight>
 
 
         )
