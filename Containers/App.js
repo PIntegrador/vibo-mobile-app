@@ -16,7 +16,7 @@ import Project from './Project';
 @observer export default class App extends Component  {
     render() {
         if(authStore.user) {
-            return ( <Chat messageListOrdered= {chatStore.messageListOrdered}/> );
+            return (   <Chat messageListOrdered= {chatStore.messageListOrdered} project = "Fk3xZh2iBjOuwhYkifd0"/> );
         }
 
         if(mainStore.screen === "login" && !authStore.user){
@@ -27,7 +27,9 @@ import Project from './Project';
             return ( <SignUp/>  );
         }
 
-        /*<Chat messageList= {chatStore.messageList}/> */
+        /*
+        <Chat messageListOrdered= {chatStore.messageListOrdered} project = "Fk3xZh2iBjOuwhYkifd0"/> 
+        */
     }
 }
 

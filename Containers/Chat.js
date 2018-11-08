@@ -17,16 +17,20 @@ import { Header } from '../components/Header';
    
     @observable message = '';
     @observable uid = ''
+    @observable anotherUid = '';
+    @observable tempEmail = 'holi';
+
     constructor(props){
         super(props);
         this.onSend = this.onSend.bind(this);
         this.logout = this.logout.bind(this);
         this.message = ''
         this.uid = authStore.user.uid;
+        this.tempEmail = 'holi'
     }
     onSend() {
         if(this.message != ''){
-            chatStore.sendMessage(this.message,this.uid );
+            chatStore.sendMessage(this.message,this.uid, authStore.user.email );
             this.clearText();
         }
     }
@@ -34,15 +38,14 @@ import { Header } from '../components/Header';
     logout () {
         authStore.signOut();
     }
-
-
     messages() {
         
         return  this.props.messageListOrdered.map(elemento => {
-            if(elemento.user == this.uid) {
-                return <OwnMessage id = {elemento.id} messageText = {elemento.messageText}/>
+           
+            if(elemento.user != this.uid) {
+               return   <Message id = {elemento.id} messageText = {elemento.messageText} user = { elemento.usermail }/>    
              } else {
-              return   <Message id = {elemento.id} messageText = {elemento.messageText} user = {authStore.user.email}/>
+                return <OwnMessage id = {elemento.id} messageText = {elemento.messageText}/>
              }
             }
         )
@@ -62,11 +65,15 @@ import { Header } from '../components/Header';
             <Header/>
             <ProjectHeader />
            <ChatHeader />
-           <ScrollView style= {styles.scrollCont} >
+           <ScrollView style= {styles.scrollCont}
+            ref={ref => this.scrollView = ref}
+            onContentSizeChange={(contentWidth, contentHeight)=>{        
+                this.scrollView.scrollToEnd({animated: true});
+            }} >
             <View style= {styles.chatContent}>
             {this.messages()}
             </View>
-            </ScrollView>
+            </ScrollView >
             <View style= {styles.writeMessage} >
             <TextInput style= {styles.input}
                      ref={component => this._textInput = component}
@@ -93,15 +100,15 @@ const styles = StyleSheet.create({
         padding:0
     },
     scrollCont : {
-        maxWidth: '100%',
+        width: '100%',
     },
     chatContent: {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         width:'100%',
+        height:'100%',
         backgroundColor:'#FBFBFB',
         padding:10,
-        marginBottom:10
     },
     writeMessage: {
         position: 'relative',
@@ -109,7 +116,7 @@ const styles = StyleSheet.create({
         left: 0,
         flexDirection: 'row',
         minHeight:60,
-        maxHeight:100,
+        maxHeight:130,
         width:'100%',
         backgroundColor:'white',
         justifyContent: 'flex-start',
