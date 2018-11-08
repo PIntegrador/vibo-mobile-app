@@ -9,6 +9,7 @@ import {
   ToastAndroid
 } from 'react-native'
 import Login from '../Containers/Login';
+import { mainStore } from './MainStore';
 
 class AuthStore {
 
@@ -41,6 +42,7 @@ class AuthStore {
         }
       } else {
         this.user = null;
+        mainStore.screen = "login";
       }
     });
   }
@@ -93,6 +95,7 @@ class AuthStore {
   @action signOut() {
     firebase.auth().signOut().then(function () {
       ToastAndroid.show('Sesión cerrada exitosamente.', ToastAndroid.SHORT);
+      mainStore.screen = "login";
     }).catch(function (error) {
       ToastAndroid.show(error.message, ToastAndroid.SHORT);
     });

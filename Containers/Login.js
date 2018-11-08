@@ -28,10 +28,9 @@ import { observable } from 'mobx';
   }
 
 render() {
-
     return (
       <View style={styles.container}>
-        <StatusBar
+        <StatusBar 
           backgroundColor="#310432"
           barStyle="light-content"
         />

@@ -11,12 +11,20 @@ import Chat from './Chat';
 import { mainStore } from '../store/MainStore';
 import {chatStore} from '../store/ChatStore'
 import Project from './Project';
+import { Opciones } from '../components/Opciones';
 
 
 @observer export default class App extends Component  {
     render() {
         if(authStore.user) {
-            return (   <Chat messageListOrdered= {chatStore.messageListOrdered} project = "Fk3xZh2iBjOuwhYkifd0"/> );
+
+            if(mainStore.where === "home"){
+                return (<Home/>)
+            } else if(mainStore.where === "project"){
+                return (<Project/>)
+            }
+            //return ( <Chat messageListOrdered= {chatStore.messageListOrdered}/> );
+
         }
 
         if(mainStore.screen === "login" && !authStore.user){
@@ -28,7 +36,7 @@ import Project from './Project';
         }
 
         /*
-        <Chat messageListOrdered= {chatStore.messageListOrdered} project = "Fk3xZh2iBjOuwhYkifd0"/> 
+         <Chat messageListOrdered= {chatStore.messageListOrdered} project = "Fk3xZh2iBjOuwhYkifd0"/>
         */
     }
 }
