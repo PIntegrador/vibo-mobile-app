@@ -17,12 +17,14 @@ import { Opciones } from '../components/Opciones';
 @observer export default class App extends Component  {
     render() {
         if(authStore.user) {
+
             if(mainStore.where === "home"){
                 return (<Home/>)
             } else if(mainStore.where === "project"){
                 return (<Project/>)
             }
             //return ( <Chat messageListOrdered= {chatStore.messageListOrdered}/> );
+
         }
 
         if(mainStore.screen === "login" && !authStore.user){
@@ -33,8 +35,9 @@ import { Opciones } from '../components/Opciones';
             return ( <SignUp/>  );
         }
 
-        
-        /*<Chat messageList= {chatStore.messageList}/> */
+        /*
+         <Chat messageListOrdered= {chatStore.messageListOrdered} project = "Fk3xZh2iBjOuwhYkifd0"/>
+        */
     }
 }
 
