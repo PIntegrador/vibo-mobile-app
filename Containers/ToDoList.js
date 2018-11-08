@@ -60,6 +60,7 @@ tasksStore.heightt = height;
                             selectedValue={tasksStore.taskUserAssigned}
                             style={styles.textInput}
                             onValueChange={(itemValue, itemIndex) => tasksStore.updateUserPicker(itemValue)}>
+                            <Picker.Item label="Seleccione un usuario" value="" />
                             <Picker.Item label="Cristian6569" value="cristian6569" />
                             <Picker.Item label="PaulaGar" value="paulagar" />
                         </Picker>
@@ -91,7 +92,7 @@ tasksStore.heightt = height;
                                 fontWeight: 500,
                                 fontSize: 16
                             }}
-                            disabled={!tasksStore.taskName.length}
+                            disabled={(tasksStore.taskUserAssigned=='' && !tasksStore.taskName.lenght)}
                             onPress={() => {
                                 tasksStore.addTask();
                                 this.setState({ showAdd: !this.state.showAdd });

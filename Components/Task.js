@@ -49,7 +49,7 @@ const { width, height } = Dimensions.get('window');
                     ).start(({ finished }) => {
                         if (finished) {
 
-                            ToastAndroid.show(what, ToastAndroid.SHORT);
+                            //ToastAndroid.show(what, ToastAndroid.SHORT);
                             this.handleTaskPressing(what);
                             
     
@@ -59,10 +59,18 @@ const { width, height } = Dimensions.get('window');
                     Animated.spring(           
                         this.state.pan,        
                         {toValue:{x:0,y:0}},
-
-                        this.state.scale,
-                        { toValue: 0, friction: 3 }   
-                    ).start();  
+ 
+                    ).start(({ finished }) => {
+                            if (finished) {
+    
+                                Animated.spring(           
+                                    this.state.scale,
+                                    { toValue: 1, friction: 5 }, 
+                                ).start()
+                            
+                            }
+                        }  
+                    ); 
                 }
 
 
