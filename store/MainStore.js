@@ -7,7 +7,7 @@ import firebase from 'react-native-firebase';
 
 class MainStore {
     @observable screen = "login";
-
+    @observable where = "home";
     constructor() {
 
     }

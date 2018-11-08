@@ -4,6 +4,8 @@ import { Header } from '../components/Header';
 import { ProjectHeader } from '../components/ProjectHeader';
 import {KanbanButton} from '../components/KanbanButton';
 import { ChatButton } from '../components/ChatButton';
+import { homeStore } from '../store/HomeStore';
+import { FloatingButton } from '../components/FloatingButton';
 
 export default class Project extends React.Component {
   render() {
@@ -19,9 +21,12 @@ export default class Project extends React.Component {
             <View style= {styles.projectContent}>
             <KanbanButton />
             <ChatButton />
-            <Text style= {styles.fixedTitle}>Documentos del Proyecto</Text>
+            {homeStore.files.map(elemento =>
+                <Text style= {styles.fixedTitle}>Documentos del Proyecto</Text>
+            )}
             </View>
         </ScrollView>
+        <FloatingButton/>
       </View>
     )
   }

@@ -1,5 +1,6 @@
 import {
-    ToastAndroid
+    ToastAndroid,
+    Vibration
 } from 'react-native';
 import {
     observable,
@@ -11,13 +12,16 @@ import firebase from 'react-native-firebase';
 import {
     authStore
 } from './AuthStore';
+import { mainStore } from './MainStore';
 
 console.ignoredYellowBox = true;
 class HomeStore {
 
-    @observable projects = ["hola"];
+    @observable projects = [];
     @observable folders = [];
     @observable files = [];
+
+    @observable projectSelected = {}
 
     @observable projectsRef = firebase.firestore().collection('Projects');
     @observable foldersRef = firebase.firestore().collection('Folders');
@@ -90,6 +94,18 @@ class HomeStore {
             this.files = filesTemp;
         });
     }
+
+    @action goToProject(projectSelected){
+        this.projectSelected = projectSelected;
+        ToastAndroid.show("Openning: "+this.projectSelected.name, ToastAndroid.SHORT);
+        mainStore.where = "project"
+    }
+
+    @action getProyectName(projectSelected){
+        this.projectSelected = projectSelected;
+        ToastAndroid.show(this.projectSelected.name, ToastAndroid.SHORT);
+    }
+
     @action prueba(user, guests) {
         let users = [];
         tempArray = guests.split(",");

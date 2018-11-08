@@ -16,8 +16,12 @@ import Project from './Project';
 @observer export default class App extends Component  {
     render() {
         if(authStore.user) {
-            
-            return (<Home/>)
+            if(mainStore.where === "home"){
+                return (<Home/>)
+            }
+            if(mainStore.where === "project"){
+                return (<Project/>)
+            }
             //return ( <Chat messageListOrdered= {chatStore.messageListOrdered}/> );
         }
 

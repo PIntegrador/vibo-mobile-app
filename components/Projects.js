@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform,ScrollView, TextInput, StyleSheet,Text,TouchableOpacity, View, Image, ToastAndroid, StatusBar } from 'react-native';
+import { Platform,ScrollView, TextInput, StyleSheet,Text,TouchableOpacity, View, Image, ToastAndroid, StatusBar, Vibration } from 'react-native';
 import { authStore } from '../store/AuthStore';
 import { homeStore } from '../store/HomeStore';
 import { observer } from 'mobx-react';
@@ -9,27 +9,33 @@ export const Projects = observer((props) => {
     return (
         <View style={styles.projectsComponent}>
             <View style={styles.titleView}>
-                <Image 
+                <Image
                     style={styles.titleImage}
-                    source = {require('../data/images/projectsIcon.png')}
+                    source={require('../data/images/projectsIcon.png')}
                 />
                 <Text style={styles.titleText}>Proyectos</Text>
             </View>
             <View style={styles.projectsCont}>
-                {homeStore.projects.map(elemento => 
-                <TouchableOpacity
-                    activeOpacity={0.7}
-                    style={styles.project}>
-                        <Image 
-                           style={styles.image}
-                           source = {require('../data/images/projectBg.png')}
+                {homeStore.projects.map(elemento =>
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={styles.project}
+                        onPress={() => {
+                            homeStore.goToProject(elemento);
+                        }}
+                        onLongPress={() => {
+                            homeStore.getProyectName(elemento);
+                        }}>
+                        <Image
+                            style={styles.image}
+                            source={require('../data/images/projectBg.png')}
                         />
                         <Text style={styles.projectTitle}>{elemento.name}</Text>
-                </TouchableOpacity>
-               )}
+                    </TouchableOpacity>
+                )}
             </View>
             <View style={styles.separador}>
-                    
+
             </View>
         </View>
     )
