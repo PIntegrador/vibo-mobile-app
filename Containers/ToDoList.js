@@ -3,8 +3,8 @@ import { ToastAndroid, PanResponder, Animated, Picker, StyleSheet, TextInput, Te
 import { Button } from 'react-native-elements';
 import { tasksStore } from '../store/TasksStore';
 import { observer } from "mobx-react";
-import Task from '../Components/Task';
-import Chart from '../Components/Chart';
+import Task from '../components/Task';
+import Chart from '../components/Chart';
 import Svg, {
     Circle,
     G,

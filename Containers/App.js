@@ -12,13 +12,28 @@ import ToDoList from './ToDoList';
 
 @observer export default class App extends Component {
     render() {
-        /*
         if(authStore.user) {
-            return ( <Home /> );
+
+            if(mainStore.where === "home"){
+                return (<Home/>)
+            } else if(mainStore.where === "project"){
+                return (<Project/>)
+            }
+            //return ( <Chat messageListOrdered= {chatStore.messageListOrdered}/> );
+
         }
-        return ( <SignUp/>  );
+
+        if(mainStore.screen === "login" && !authStore.user){
+            return ( <Login/> );
+        }
+        
+        if(mainStore.screen === "signup" && !authStore.user){
+            return ( <SignUp/>  );
+        }
+
+        /*
+         <Chat messageListOrdered= {chatStore.messageListOrdered} project = "Fk3xZh2iBjOuwhYkifd0"/>
         */
-        return <ToDoList />
     }
 }
 
