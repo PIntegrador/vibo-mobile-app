@@ -11,6 +11,7 @@ import Chat from './Chat';
 import { mainStore } from '../store/MainStore';
 import {chatStore} from '../store/ChatStore'
 import Project from './Project';
+import { Opciones } from '../components/Opciones';
 
 
 @observer export default class App extends Component  {
@@ -18,8 +19,7 @@ import Project from './Project';
         if(authStore.user) {
             if(mainStore.where === "home"){
                 return (<Home/>)
-            }
-            if(mainStore.where === "project"){
+            } else if(mainStore.where === "project"){
                 return (<Project/>)
             }
             //return ( <Chat messageListOrdered= {chatStore.messageListOrdered}/> );
@@ -33,6 +33,7 @@ import Project from './Project';
             return ( <SignUp/>  );
         }
 
+        
         /*<Chat messageList= {chatStore.messageList}/> */
     }
 }

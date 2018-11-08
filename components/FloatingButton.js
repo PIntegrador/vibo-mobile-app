@@ -30,8 +30,7 @@ export const FloatingButton = (props) => {
                         }}>
                         <Icon color="white" name="folder-plus" type="feather" />
                     </ActionButton.Item>
-                    {
-                        <ActionButton.Item
+                    <ActionButton.Item
                         size={45}
                         buttonColor='#F66880'
                         title="Nuevo Proyecto"
@@ -42,34 +41,24 @@ export const FloatingButton = (props) => {
                         }}>
                         <Icon color="white" name="project" type="Octicons" />
                     </ActionButton.Item>
-                    }
-                    
                 </ActionButton>
-                )
+            )
         }
         return (
             <ActionButton buttonColor="#10E6C5" spacing={15}>
-                <ActionButton.Item
-                    size={45}
-                    buttonColor='#551159'
-                    title="Subir Archivo"
-                    onPress={() => {
-                        ToastAndroid.show("Archivo", ToastAndroid.SHORT);
-                    }}>
-                    <Icon color="white" name="folder-plus" type="feather" />
-                </ActionButton.Item>
+
                 <ActionButton.Item
                     size={45}
                     buttonColor='#FDC741'
-                    title="Nueva Carpeta"
+                    title="Nueva Tarea"
                     onPress={() => {
                         ToastAndroid.show("Carpeta", ToastAndroid.SHORT)
                     }}>
                     <Icon color="white" name="folder-plus" type="feather" />
                 </ActionButton.Item>
             </ActionButton>
-            )
-      }
+        )
+    }
     return (
         <Menu/>
         )

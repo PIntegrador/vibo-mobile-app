@@ -1,6 +1,6 @@
 import React, {Component } from 'react';
 import {observer} from "mobx-react";
-import { Platform,StyleSheet,Text, View, ScrollView, StatusBar } from 'react-native';
+import { Platform,StyleSheet,Text, View,TouchableOpacity, ScrollView, StatusBar } from 'react-native';
 import { FormInput, FormLabel, Button } from 'react-native-elements';
 
 import {homeStore} from '../store/HomeStore'
@@ -10,7 +10,9 @@ import { Projects } from '../components/Projects';
 import { Folders } from '../components/Folders';
 import { Files } from '../components/Files';
 import { FloatingButton } from '../components/FloatingButton';
+import { Opciones } from '../components/Opciones';
 import { observable } from 'mobx';
+import { mainStore } from '../store/MainStore';
 console.disableYellowBox = true;
 
 @observer export default class Home extends Component  {
@@ -23,21 +25,45 @@ console.disableYellowBox = true;
         authStore.signOut();
     }
     render() {
-        return ( 
-            <View style = {styles.container} > 
-                <StatusBar 
-                    backgroundColor="#240326"
-                    barStyle="light-content"
-                />
-                <Header/>
-                <ScrollView style={styles.scroll}>
-                    <Projects />
-                    <Folders />
-                    <Files />
-                </ScrollView>
-                <FloatingButton/>
-            </View> );
+        if (!mainStore.settings) {
+            return ( 
+                <View style = {styles.container} > 
+                    <StatusBar 
+                        backgroundColor="#240326"
+                        barStyle="light-content"
+                    />
+                    <Header/>
+                    <ScrollView style={styles.scroll}>
+                        <Projects />
+                        <Folders />
+                        <Files />
+                    </ScrollView>
+                    <FloatingButton/>      
+                </View> 
+            );
+        } else {
+            return ( 
+                <TouchableOpacity  
+                    activeOpacity = {1}
+                    style = {styles.container}
+                    onPress={() => mainStore.settings = false}> 
+                    <StatusBar 
+                        backgroundColor="#240326"
+                        barStyle="light-content"
+                    />
+                    <Header/>
+                    <ScrollView style={styles.scroll}>
+                        <Projects />
+                        <Folders />
+                        <Files />
+                    </ScrollView>
+                    <FloatingButton/>
+                    <Opciones/>
+                </TouchableOpacity > 
+            );
         }
+        
+    }
 }
 
 const styles = StyleSheet.create({

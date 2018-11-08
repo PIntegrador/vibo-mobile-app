@@ -1,37 +1,38 @@
 import React from 'react';
-import {Platform,ScrollView, TextInput, StyleSheet,Image,TouchableHighlight, View} from 'react-native';
+import {Platform,ScrollView, TextInput, StyleSheet,Image,TouchableOpacity, View, ToolbarAndroid, showS} from 'react-native';
+import { mainStore } from '../store/MainStore';
 
 export const Header = (props) => {
     return (
-        <View style = {styles.cont}>
-        <View style = {styles.left}>
-        <TouchableHighlight>
-        <Image style = {styles.logo}
-          source = {require('../data/images/logoBlanco.png')}
-        />
-        </TouchableHighlight>
+        <View style={styles.cont}>
+            <View style={styles.left}>
+                <TouchableOpacity >
+                    <Image style={styles.logo}
+                        source={require('../data/images/logoBlanco.png')}
+                    />
+                </TouchableOpacity>
 
-        </View>
-       
-        <View style = {styles.right}>
-        <TouchableHighlight style = {styles.notZone}>
-             
-             <Image style = {styles.notifications}
-               source = {require('../data/images/notification.png')}
-             />
-                 </TouchableHighlight>
-                 <TouchableHighlight style = {styles.optZone}>
-                  
-                 <Image style = {styles.options}
-               source = {require('../data/images/options.png')}
-             />
-                 </TouchableHighlight>
-                
-        </View>
-       
-        </View>
+            </View>
+            <View style={styles.right}>
+                <TouchableOpacity style={styles.notZone}>
+
+                    <Image style={styles.notifications}
+                        source={require('../data/images/notification.png')}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => mainStore.settings = !mainStore.settings}
+                style={styles.optZone}>
+
+                    <Image style={styles.options}
+                        source={require('../data/images/options.png')}
+                    />
+                </TouchableOpacity>
+            </View>
+        </View>  
     )
 }
+
   
 const styles = StyleSheet.create({
     cont: {
