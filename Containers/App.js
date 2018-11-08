@@ -7,15 +7,19 @@ import {authStore} from '../store/AuthStore'
 import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
+import Chat from './Chat';
 import { mainStore } from '../store/MainStore';
+import {chatStore} from '../store/ChatStore'
+import Project from './Project';
 
 
 @observer export default class App extends Component  {
     render() {
         if(authStore.user) {
-            return ( <Home /> );
+            
+            return (<Home/>)
+            //return ( <Chat messageListOrdered= {chatStore.messageListOrdered}/> );
         }
-
 
         if(mainStore.screen === "login" && !authStore.user){
             return ( <Login/> );
@@ -24,6 +28,8 @@ import { mainStore } from '../store/MainStore';
         if(mainStore.screen === "signup" && !authStore.user){
             return ( <SignUp/>  );
         }
+
+        /*<Chat messageList= {chatStore.messageList}/> */
     }
 }
 
