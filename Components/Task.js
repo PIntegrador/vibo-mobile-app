@@ -3,6 +3,7 @@ import { StyleSheet, TouchableHighlight, View, Text, ToastAndroid, PanResponder,
 import { observer } from "mobx-react";
 import { tasksStore } from '../store/TasksStore';
 
+const { width, height } = Dimensions.get('window');
 
 
 @observer export default class Task extends React.Component {
@@ -12,7 +13,10 @@ import { tasksStore } from '../store/TasksStore';
 
         this.state = {
             pan: new Animated.ValueXY(),
-            dropZoneValues: null
+            scale: new Animated.Value(1),
+            showDraggs: false,
+            dropAreaValues: null,
+
         };
     }
     componentWillMount() {
@@ -23,27 +27,66 @@ import { tasksStore } from '../store/TasksStore';
             onPanResponderGrant: (e, gestureState) => {
                 this.state.pan.setOffset({ x: this.state.pan.x._value, y: this.state.pan.y._value });
                 this.state.pan.setValue({ x: 0, y: 0 });
+                Animated.spring(
+                    this.state.scale,
+                    { toValue: 1.1, friction: 5 }
+                ).start();
+                tasksStore.showDraggs = true;
             },
 
             onPanResponderMove: Animated.event([
                 null, { dx: this.state.pan.x, dy: this.state.pan.y },
             ]),
 
-            onPanResponderRelease: (e, { vx, vy }) => {
-                Animated.spring(
-                    this.state.pan, {
-                        toValue: { x: 0, y: 0 },
-                        friction: 10
-                    }).start(({finished}) => {
+            onPanResponderRelease: (e, gestureState) => {
+                tasksStore.showDraggs = false;
+
+                let what = this.isDropArea(gestureState);
+                if (this.props.complete != what) {
+                    Animated.spring(
+                        this.state.scale,
+                        { toValue: 0, friction: 3 }
+                    ).start(({ finished }) => {
                         if (finished) {
-                            this.handleTaskPressing();
+
+                            ToastAndroid.show(what, ToastAndroid.SHORT);
+                            this.handleTaskPressing(what);
+                            
+    
                         }
                     });
+                } else {
+                    Animated.spring(           
+                        this.state.pan,        
+                        {toValue:{x:0,y:0}},
+
+                        this.state.scale,
+                        { toValue: 0, friction: 3 }   
+                    ).start();  
+                }
+
+
+
+
+                
+
+                    
             }
         });
-
-
     }
+
+    isDropArea(gesture) {
+        let kind ;
+        if (gesture.moveY < tasksStore.heightt/3) {
+            kind = 'todo'
+        } else if (gesture.moveY > tasksStore.heightt/3 && gesture.moveY < (tasksStore.heightt/3)*2) {
+            kind = 'doing'
+        } else if (gesture.moveY > tasksStore.heightt/3) {
+            kind = 'done'
+        }
+        return kind;
+    }
+      
     checkState() {
         //ToastAndroid.show(this.props.complete, ToastAndroid.SHORT)
         if (this.props.complete == "todo") {
@@ -59,21 +102,24 @@ import { tasksStore } from '../store/TasksStore';
                 }
     }
 
-    handleTaskPressing() {
+
+    handleTaskPressing(kind) {
+
+            if (kind == "todo") {
+                this.props.doc.ref.update({
+                    complete: "todo"
+                })
+            } else if (kind == "doing") {
+                this.props.doc.ref.update({
+                    complete: "doing"
+                })
+            } else if (kind == "done") {
+                this.props.doc.ref.update({
+                    complete: "done"
+                })
+            }
+
         
-        if (this.props.complete == "todo") {
-            this.props.doc.ref.update({
-                complete: "doing"
-            })
-        } else if (this.props.complete == "doing") {
-            this.props.doc.ref.update({
-                complete: "done"
-            })
-        } else if (this.props.complete == "done") {
-            this.props.doc.ref.update({
-                complete: "todo"
-            })
-        }
     }
 
     render() {
@@ -81,19 +127,21 @@ import { tasksStore } from '../store/TasksStore';
         if (tasksStore.loading == true) {
             return null;
         }
-        
-        let { pan } = this.state;
+
+        let { pan, scale } = this.state;
         let [translateX, translateY] = [pan.x, pan.y];
-        let taskStyle = { transform: [{ translateX }, { translateY }] };
+        let taskStyle = { transform: [{ translateX }, { translateY }, { scale }] };
 
         return (
             /*
                       <TouchableHighlight underlayColor="white"   onPress={ () => this.handleTaskPressing()} >
              </TouchableHighlight>
 
-            */ 
+            */
+            <View>
 
-            <Animated.View style={[taskStyle, styles.container]} {...this._panResponder.panHandlers} >
+
+                <Animated.View style={[taskStyle, styles.container]} {...this._panResponder.panHandlers} >
                     <View style={styles.subcontainer} >
                         <View style={styles.subcontainer}>
                             {
@@ -104,7 +152,9 @@ import { tasksStore } from '../store/TasksStore';
                         <View style={styles.assign} />
                     </View>
 
-            </Animated.View>
+                </Animated.View>
+            </View>
+
 
 
         )
@@ -112,6 +162,7 @@ import { tasksStore } from '../store/TasksStore';
 }
 
 const styles = StyleSheet.create({
+
     container: {
         borderRadius: 50,
         borderWidth: 1,

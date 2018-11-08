@@ -1,5 +1,5 @@
 import React from 'react'
-import { ToastAndroid, StyleSheet, TextInput, Text, View, ScrollView, Dimensions } from 'react-native';
+import { ToastAndroid, PanResponder, Animated, Picker, StyleSheet, TextInput, Text, View, ScrollView, Dimensions } from 'react-native';
 import { Button } from 'react-native-elements';
 import { tasksStore } from '../store/TasksStore';
 import { observer } from "mobx-react";
@@ -12,27 +12,20 @@ import Svg, {
 } from 'react-native-svg';
 
 const { width, height } = Dimensions.get('window');
-
+tasksStore.heightt = height;
 
 @observer export default class ToDoList extends React.Component {
 
     constructor(props) {
         super(props);
 
+        this.state = {
+            showAdd: false,
 
+        }
     }
 
-    /*
-        componentDidMount() {
-            tasksStore.functi();
-        }
-    
-        componentWillUnmount() {
-            tasksStore.nofuncti();
-        }*/
-
     list(array) {
-
         return array.map(e => {
             return (
                 <Task key={e.key} doc={e.doc} name={e.name} complete={e.complete} />
@@ -40,20 +33,107 @@ const { width, height } = Dimensions.get('window');
         })
     }
 
+    constructAddPopUp() {
+        if (this.state.showAdd == true)
+            return (
+                <View style={styles.popBack}>
+                    <View style={styles.popContainer}>
+                        <Text
+                            style={styles.textTitle}
+                        >Nueva Tarea</Text>
+                        <Text
+                            style={styles.textLabel}
+                        >Tarea</Text>
+                        <TextInput
+                            placeholder="Agregar nombre de la tarea"
+                            autoCapitalize="none"
+                            style={styles.textInput}
+                            value={tasksStore.taskName}
+                            onChangeText={(text) => {
+                                tasksStore.updateTextInput(text);
+                            }}
+                        />
+                        <Text
+                            style={styles.textLabel}>
+                            Asignar a</Text>
+                        <Picker
+                            selectedValue={tasksStore.taskUserAssigned}
+                            style={styles.textInput}
+                            onValueChange={(itemValue, itemIndex) => tasksStore.updateUserPicker(itemValue)}>
+                            <Picker.Item label="Cristian6569" value="cristian6569" />
+                            <Picker.Item label="PaulaGar" value="paulagar" />
+                        </Picker>
+                        <Text
+                            style={styles.textLabel}>
+                            Estado de la tarea</Text>
+                        <Picker
+                            selectedValue={tasksStore.taskState}
+                            style={styles.textInput}
+                            onValueChange={(itemValue, itemIndex) => tasksStore.updateStatePicker(itemValue)}>
+                            <Picker.Item label="Por hacer" value="todo" />
+                            <Picker.Item label="En marcha" value="doing" />
+                            <Picker.Item label="Terminado" value="done" />
+                        </Picker>
+
+                        <Button
+                            title={'Añadir Tarea'}
+
+                            buttonStyle={{
+                                backgroundColor: '#310432',
+                                borderRadius: 5,
+                                width: 198,
+                                height: 42
+
+                            }}
+                            titleStyle={{
+                                /* Añadir tarea */
+                                color: '#FBFBFB',
+                                fontWeight: 500,
+                                fontSize: 16
+                            }}
+                            disabled={!tasksStore.taskName.length}
+                            onPress={() => {
+                                tasksStore.addTask();
+                                this.setState({ showAdd: !this.state.showAdd });
+                            }}
+                        />
+                    </View>
+                </View>
+            )
+    }
+
+    constructDraggables() {
+        if (tasksStore.showDraggs == true)
+        return (
+        <View style={styles.draggableContainer}>
+            <View style={[styles.draggable, styles.draggableTodo]}>
+                <Text>Pasar a por hacer</Text>
+            </View>
+            <View style={[styles.draggable, styles.draggableDoing]}>
+            <Text>Pasar a en marcha</Text>
+
+            </View>
+            <View style={[styles.draggable, styles.draggableDone]}>
+            <Text>Pasar a terminados</Text>
+
+            </View>
+        </View>)
+    }
     render() {
 
 
         return (
             <View>
-                <ScrollView>
-                    <View style= {styles.chartSection}>
-                        <Text style= {styles.generalTitle}> Proyecto en Kanban </Text>
 
-                    <View style={styles.chartContainer} >
-                        <Chart kind= {"Pendiente"} percentage= {tasksStore.todosPercentage} color={"#F66880"} />
-                        <Chart kind= {"En marcha"} percentage= {tasksStore.doingsPercentage} color={"#FDC741"} />
-                        <Chart kind= {"Terminado"} percentage= {tasksStore.donesPercentage} color={"#32F373"} />
-                    </View>
+                <ScrollView>
+                    <View style={styles.chartSection}>
+                        <Text style={styles.generalTitle}> Proyecto en Kanban </Text>
+
+                        <View style={styles.chartContainer} >
+                            <Chart kind={"Pendiente"} percentage={tasksStore.todosPercentage} color={"#F66880"} />
+                            <Chart kind={"En marcha"} percentage={tasksStore.doingsPercentage} color={"#FDC741"} />
+                            <Chart kind={"Terminado"} percentage={tasksStore.donesPercentage} color={"#32F373"} />
+                        </View>
                     </View>
                     <View style={styles.generalContainer}>
                         <View style={styles.todoContainer}>
@@ -81,17 +161,9 @@ const { width, height } = Dimensions.get('window');
 
                     </View>
 
-                    <TextInput
-                        placeholder={'Add TODO'}
-                        value={tasksStore.taskName}
-                        onChangeText={(text) => tasksStore.updateTextInput(text)}
-                    />
-                    <Button
-                        title={'Add TODO'}
-                        disabled={!tasksStore.taskName.length}
-                        onPress={() => tasksStore.addTask()}
-                    />
                 </ScrollView>
+                {this.constructDraggables()}
+                {this.constructAddPopUp()}
             </View>
         )
     }
@@ -99,6 +171,49 @@ const { width, height } = Dimensions.get('window');
 
 
 const styles = StyleSheet.create({
+
+    draggableContainer: {
+        position: "absolute",
+        flexDirection: 'column'
+    },
+    draggable: {
+        height: tasksStore.heightt / 3,
+        width: width,
+        flexDirection: 'row',
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    draggableTodo : {
+        backgroundColor: 'rgba(246,104,128,.9)'
+    },
+    draggableDoing : {
+        backgroundColor: 'rgba(253,199,65,.9)'
+
+    },
+    draggableDone : {
+        backgroundColor: 'rgba(50,243,115,.9)'
+
+    },
+    popBack: {
+        width: width,
+        height: height,
+        backgroundColor: 'rgba(0,0,0,.8)',
+        position: 'absolute',
+        flexDirection: 'row',
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    popContainer: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 40,
+        width: width * .8,
+        height: height * .8,
+        flexDirection: 'column',
+
+    },
     generalTitle: {
 
         fontWeight: 'bold',
@@ -110,7 +225,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         justifyContent: 'center',
-        borderBottomWidth: 1,        
+        borderBottomWidth: 1,
         borderTopWidth: 1,
         borderColor: '#E0E0E0',
     },

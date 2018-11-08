@@ -4,8 +4,11 @@ import { ToastAndroid } from 'react-native';
 
 class TasksStore {
 
-    @observable ref = firebase.firestore().collection('tasks');
+    @observable ref = firebase.firestore().collection('Tasks');
     @observable taskName = '';
+    @observable taskState = '';
+    @observable taskUserAssigned = '';
+
     @observable tasks = [];
 
     @observable todos = [];
@@ -15,10 +18,10 @@ class TasksStore {
     @observable doingsPercentage = 0 ;
     @observable donesPercentage = 0 ;
 
-
-
     @observable unsubscribe = null;
     @observable loading = true;
+    @observable showDraggs = false;
+    @observable heightt = 0;
 
 
     constructor() {
@@ -79,15 +82,21 @@ class TasksStore {
     updateTextInput(value) {
         this.taskName = value;
     }
+    updateStatePicker(value) {
+        this.taskState = value;
+    }
+    updateUserPicker(value) {
+        this.taskUserAssigned = value;
+    }
 
     addTask() {
 
         this.ref.add({
             name: this.taskName,
-            complete: "todo",
+            complete: this.taskState,
             date: new Date(),
             projectID: "",
-            userAsignedID: ""
+            userAsignedID: this.taskUserAssigned
         });
         this.taskName = '';
     }
