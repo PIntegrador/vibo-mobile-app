@@ -8,6 +8,11 @@ import Home from './Home';
 import Login from './Login';
 import SignUp from './SignUp';
 import ToDoList from './ToDoList';
+import Chat from './Chat';
+import { mainStore } from '../store/MainStore';
+import {chatStore} from '../store/ChatStore'
+import Project from './Project';
+import { Opciones } from '../components/Opciones';
 
 
 @observer export default class App extends Component {
