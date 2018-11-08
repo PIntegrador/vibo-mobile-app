@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         width:'100%',
-        height:'100%',
         backgroundColor:'#FBFBFB',
         padding:10,
     },
