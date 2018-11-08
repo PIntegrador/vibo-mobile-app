@@ -19,12 +19,11 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         alignSelf: 'flex-end',
         elevation:2,
-        maxWidth: '80%'
+        maxWidth: '90%'
     },
     message: {
         color: 'white',
         fontSize:18,
         textAlign: 'right',
     }
-    
 });
